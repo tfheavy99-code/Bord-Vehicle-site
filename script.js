@@ -1,26 +1,31 @@
-// Smooth fade-in when scrolling
-const sections = document.querySelectorAll('section');
+// Intersection Observer for fade in/out
+const fadeSections = document.querySelectorAll('.fade-section');
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
       entry.target.style.opacity = 1;
       entry.target.style.transform = 'translateY(0)';
+    } else {
+      entry.target.style.opacity = 0;
+      entry.target.style.transform = 'translateY(20px)';
     }
   });
 }, { threshold: 0.1 });
 
-sections.forEach(section => {
-  observer.observe(section);
-});
+fadeSections.forEach(section => observer.observe(section));
 
-// Gallery hover effect (optional extra animation)
-const images = document.querySelectorAll('.image-placeholder');
-images.forEach(img => {
-  img.addEventListener('mouseover', () => {
-    img.style.transform = 'scale(1.1)';
+// Fade in gallery images individually
+const galleryImages = document.querySelectorAll('.gallery img');
+
+const galleryObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.style.opacity = 1;
+    } else {
+      entry.target.style.opacity = 0;
+    }
   });
-  img.addEventListener('mouseout', () => {
-    img.style.transform = 'scale(1)';
-  });
-});
+}, { threshold: 0.1 });
+
+galleryImages.forEach(img => galleryObserver.observe(img));
